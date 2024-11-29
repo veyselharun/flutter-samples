@@ -1,12 +1,12 @@
 // https://www.dhiwise.com/post/infinite-list-in-flutter-scroll-more-load-less
 
-// Consume a list from the web service.
+// Consume a list from the web service using pagination.
 //
 // The web service information and the Flutter documentation is given below.
 // 
 // Web Service
-// https://docs.spacexdata.com
-// curl --request GET --url 'https://api.spacexdata.com/v3/launches?limit=20&offset=0'
+// https://jsonplaceholder.typicode.com
+// curl --request GET --url 'https://jsonplaceholder.typicode.com/posts?_page=1&_limit=2'
 // 
 // Flutter Documentation
 // https://docs.flutter.dev/cookbook/networking/fetch-data
@@ -70,13 +70,13 @@ class MyListViewWidget extends StatefulWidget {
 class _MyListViewWidgetState extends State<MyListViewWidget> {
   final ScrollController _scrollController = ScrollController();
   final List<String> _myListItems = <String>[];
-  int _offset = 0;
+  int _page = 1;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(loadNewPage);
-    _fetchData(_offset);
+    _fetchData(_page);
   }
 
   @override
@@ -87,11 +87,16 @@ class _MyListViewWidgetState extends State<MyListViewWidget> {
 
   Future<void> _fetchData(int offset) async {
     final response = await http
-        .get(Uri.parse('https://api.spacexdata.com/v3/launches?limit=20&offset=$_offset'));
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts?_page=$_page&_limit=10'));
     if (response.statusCode == 200) {
       // After parsing JSON get only one String.
       setState(() {
-        _myListItems.addAll(List<String>.from(jsonDecode(response.body)));
+        //final headers = jsonDecode(response.headers) as Map<String, String>;
+        final List<dynamic> posts = jsonDecode(response.body);
+        if (posts.isNotEmpty) {
+          final postTitles = posts.map((post) => post['body'] as String);
+          _myListItems.addAll(List<String>.from(postTitles));
+        }        
       });
     } else {
       throw Exception('Failed to load data');
@@ -102,8 +107,8 @@ class _MyListViewWidgetState extends State<MyListViewWidget> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       setState(() {
-        _offset = _offset + 20;
-        _fetchData(_offset);
+        _page++;
+        _fetchData(_page);
       });
     }
   }
@@ -113,10 +118,11 @@ class _MyListViewWidgetState extends State<MyListViewWidget> {
     return ListView.builder(
       controller: _scrollController,
       itemCount: _myListItems.length,
+      /*
       prototypeItem: ListTile(
         leading: const Icon(Icons.cloud_circle),
         title: Text(_myListItems.first),
-      ),
+      ),*/
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
             leading: const Icon(Icons.cloud), title: Text(_myListItems[index]));
