@@ -6,8 +6,9 @@
 // https://jsonplaceholder.typicode.com
 // curl --request GET --url 'https://jsonplaceholder.typicode.com/albums/1'
 // 
-// Flutter Documentation
+// Flutter and Dart Documentation
 // https://docs.flutter.dev/cookbook/networking/fetch-data
+// https://dart.dev/tutorials/server/fetch-data
 
 import 'dart:convert';
 

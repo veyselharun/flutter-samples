@@ -1,4 +1,4 @@
-// https://docs.flutter.dev/cookbook/lists/basic-list
+// https://docs.flutter.dev/cookbook/lists/long-lists
 
 import 'package:flutter/material.dart';
 
@@ -33,6 +33,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  List<String> createListItems() {
+    List<String> myListItems =
+        List<String>.generate(20000, (index) => 'Item ${index + 1}');
+    return myListItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,23 +47,26 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: const <Widget>[
-          ListTile(
-            leading: Icon(Icons.map),
-            title: Text('Map'),
-          ),
-          ListTile(
-            leading: Icon(Icons.photo_album),
-            title: Text('Album'),
-          ),
-          ListTile(
-            leading: Icon(Icons.abc),
-            title: Text('ABC'),
-            subtitle: Text('ABC Text ABC Text ABC Text ABC Text ABC Text ABC Text ABC Text ABC Text'),
-          ),
-        ],
-      ),
+      body: MyListViewWidget(myListItems: createListItems()),
+    );
+  }
+}
+
+class MyListViewWidget extends StatelessWidget {
+  final List<String> myListItems;
+
+  const MyListViewWidget({super.key, required this.myListItems});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: myListItems.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+            leading: const Icon(Icons.cloud),
+            title: Text(myListItems[index]));
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
