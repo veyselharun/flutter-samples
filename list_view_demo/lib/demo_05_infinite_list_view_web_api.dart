@@ -1,11 +1,15 @@
+// Useful Resource
 // https://www.dhiwise.com/post/infinite-list-in-flutter-scroll-more-load-less
-
+//
 // Consume a list from the web service using pagination.
 //
 // The web service information and the Flutter documentation is given below.
 // 
 // Web Service
 // https://jsonplaceholder.typicode.com
+//
+// Documentation
+// https://github.com/typicode/json-server/blob/main/README.md
 // curl --request GET --url 'https://jsonplaceholder.typicode.com/posts?_page=1&_limit=2'
 // 
 // Flutter Documentation

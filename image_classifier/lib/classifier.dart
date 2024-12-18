@@ -67,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Run inference
     final outputTensor =
         List.filled(_labels!.length, 0.0).reshape([1, _labels!.length]);
+        
     _interpreter!.run(inputTensor, outputTensor);
 
     List<double> probabilities = outputTensor.first;
