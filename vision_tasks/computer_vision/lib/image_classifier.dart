@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final bytes = await imageFile.readAsBytes();
     img.Image? image = img.decodeImage(bytes);
 
-    // Define YOLO input size
+    // Define the YOLO input size
     // For YOLO classification input size should be 224
     const int inputSize = 224;
 
@@ -124,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
         interpolation: img.Interpolation.linear);*/
 
     // Normalize and convert the image to a 4D tensor
+    // The tensor shape should be [1, 224, 224, 3] and normalized between 0 and 1
     // We can use List<dynamic>. If we choose to do that we also need to change the return value.
     List<List<List<List<double>>>> inputTensor = List.generate(
       1,
@@ -132,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
         (y) => List.generate(
           inputSize,
           (x) {
-            // Get pixel values.
+            // Get pixel values
             final pixel = resizedImage.getPixel(x, y);
             // Normalize pixel values between 0 and -1.
             // If you want to normalize between -1 and 1 the formula should be like
