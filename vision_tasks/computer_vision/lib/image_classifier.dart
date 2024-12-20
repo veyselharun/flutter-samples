@@ -126,7 +126,11 @@ class _MyHomePageState extends State<MyHomePage> {
         (y) => List.generate(
           inputSize,
           (x) {
+            // Get pixel values.
             final pixel = resizedImage.getPixel(x, y);
+            // Normalize pixel values between 0 and -1.
+            // If you want to normalize between -1 and 1 the formula should be like
+            // (pixel_value - 127.5) / 127.5
             final r = pixel.r / 255.0;
             final g = pixel.g / 255.0;
             final b = pixel.b / 255.0;
