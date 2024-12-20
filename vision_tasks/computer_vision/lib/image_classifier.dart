@@ -54,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         await Interpreter.fromAsset('assets/yolo11m-cls_float32.tflite');  
   }
 
+  // Load labels from the asset file
   Future<void> _loadLabels() async {
     final labelsData =
         await DefaultAssetBundle.of(context).loadString('assets/image_net_labels.txt');
