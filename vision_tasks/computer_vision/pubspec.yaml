@@ -63,7 +63,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/yolo11m-cls_float32.tflite
-    - assets/labels.txt
+    - assets/image_net_labels.txt
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

@@ -56,30 +56,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _loadLabels() async {
     final labelsData =
-        await DefaultAssetBundle.of(context).loadString('assets/labels.txt');
+        await DefaultAssetBundle.of(context).loadString('assets/image_net_labels.txt');
     setState(() {
       _labels = labelsData.split('\n');
     });
   }
 
   Future<void> _classifyImage(File imageFile) async {
+    // Create input tensor
     // Convert the image to YOLO input tensor
-    final inputTensor = await _createYOLOInputTensor(imageFile);
+    // Input tensor is a 4D array with shape [1, 224, 224, 3]
+    final List<List<List<List<double>>>> inputTensor = await _createYOLOInputTensor(imageFile);
+
+    // Create output tensor
+    // Output tensor is a 2D array with shape [1, 1000]
+    final List<List<double>> outputTensor = List.generate(1, (_) => List.filled(_labels!.length, 0.0));
 
     // Run inference
-    final outputTensor =
-        List.filled(_labels!.length, 0.0).reshape([1, _labels!.length]);
-        
     _interpreter!.run(inputTensor, outputTensor);
 
+    // Get the index of the highest probability
     List<double> probabilities = outputTensor.first;
     int highestProbabilityIndex = probabilities
       .indexWhere((element) => element == probabilities.reduce(max));
      
+    // Get the label and value of the highest probability
     final label = _labels![highestProbabilityIndex];
     final confidence = probabilities[highestProbabilityIndex];
 
     setState(() {
+      // Convert confidence to percentage and display the result
       _classificationResult =
           "$label: ${(confidence * 100).toStringAsFixed(2)}%";
     });
