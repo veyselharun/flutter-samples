@@ -77,9 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _loadModel() async {
     _interpreter =
-        await Interpreter.fromAsset('assets/yolov8m_float32.tflite');
-    print(_interpreter!.getInputTensor(0).shape);
-    print(_interpreter!.getOutputTensor(0).shape);
+        await Interpreter.fromAsset('assets/yolo11l_float32.tflite');
+    print('Veysel: Input tensor shape: ${_interpreter!.getInputTensor(0).shape}');
+    print('Veysel: Output tensor shape: ${_interpreter!.getOutputTensor(0).shape}');
   }
 
   // Load labels from the asset file
@@ -214,9 +214,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // Run inference
     _interpreter!.run(inputTensor, outputTensor);
 
+    // Process output tensor
     final detections = processModelOutput(outputTensor);
 
-    // Process detections
     for (final detection in detections) {
       print('Veysel: Class: ${detection.classId}');
       print('Veysel: Confidence: ${detection.confidence}');

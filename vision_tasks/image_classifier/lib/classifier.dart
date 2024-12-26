@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _loadModel() async {
     _interpreter =
-        await Interpreter.fromAsset('assets/yolo11m-cls_float32.tflite');  
+        await Interpreter.fromAsset('assets/yolo11l-cls_float32.tflite');
   }
 
   // Load labels from the asset file
