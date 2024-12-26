@@ -129,7 +129,14 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       
       if (maxScore > confidenceThreshold) {
-        boxes.add(rect);
+        final absoluteRect = Rect.fromLTWH(
+          rect.left * 640,
+          rect.top * 640,
+          rect.width * 640,
+          rect.height * 640
+        );
+
+        boxes.add(absoluteRect);
         scores.add(maxScore);
         classes.add(maxClass);
       }
@@ -206,15 +213,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Run inference
     _interpreter!.run(inputTensor, outputTensor);
-    // print(outputTensor);
 
     final detections = processModelOutput(outputTensor);
 
     // Process detections
     for (final detection in detections) {
-      print('Class: ${detection.classId}');
-      print('Confidence: ${detection.confidence}');
-      print('Bounding Box: ${detection.boundingBox}');
+      print('Veysel: Class: ${detection.classId}');
+      print('Veysel: Confidence: ${detection.confidence}');
+      print('Veysel: Bounding Box: ${detection.boundingBox}');
     }
 
     final image = img.decodeImage(imageFile.readAsBytesSync())!;
@@ -326,15 +332,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-/*
-Widget buildDetectionView() {
-  return DetectionView(
-    detections: detections,
-    image: Image.file(imageFile),
-    originalImageSize: Size(imageWidth, imageHeight), // Original image dimensions before resizing
-  );
-}
-*/
 
 class DetectionView extends StatelessWidget {
   final List<Detection> detections;
@@ -354,13 +351,11 @@ class DetectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final displaySize = Size(constraints.maxWidth, constraints.maxHeight);
         
         return CustomPaint(
           foregroundPainter: BoundingBoxPainter(
             detections: detections,
             originalImageSize: originalImageSize,
-            displaySize: displaySize,
             labels: labels,
           ),
           child: image,
@@ -373,13 +368,11 @@ class DetectionView extends StatelessWidget {
 class BoundingBoxPainter extends CustomPainter {
   final List<Detection> detections;
   final Size originalImageSize;  // Original image size before resize
-  final Size displaySize;       // Size at which image is displayed
   final List<String> labels;
   
   BoundingBoxPainter({
     required this.detections,
     required this.originalImageSize,
-    required this.displaySize,
     required this.labels,
   });
 
@@ -394,6 +387,18 @@ class BoundingBoxPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.left,
     );
+
+    final double aspectRatio = originalImageSize.width / originalImageSize.height;
+    final double newWidth, newHeight;
+    if (aspectRatio > 1) {
+      newWidth = 300;
+      newHeight = 300 / aspectRatio;
+    } else {
+      newWidth = 300 / aspectRatio;
+      newHeight = 300;
+    }
+    final Size displaySize = Size(newWidth, newHeight);
+    final topMargin = (300 - newHeight) / 2;
 
     // Calculate scaling factors from model input (640x640) to original image size
     final modelToOriginalScaleX = originalImageSize.width / 640;
@@ -415,7 +420,7 @@ class BoundingBoxPainter extends CustomPainter {
       // Then, scale to display size
       final displayRect = Rect.fromLTWH(
         originalRect.left * originalToDisplayScaleX,
-        originalRect.top * originalToDisplayScaleY,
+        (originalRect.top * originalToDisplayScaleY) + topMargin,
         originalRect.width * originalToDisplayScaleX,
         originalRect.height * originalToDisplayScaleY,
       );
