@@ -54,8 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _loadModel() async {
+    final interpreterOptions = InterpreterOptions()..useNnApiForAndroid = true;
     _interpreter =
-        await Interpreter.fromAsset('assets/yolo11l-cls_float32.tflite');
+        await Interpreter.fromAsset('assets/yolo11l-cls_float32.tflite', options: interpreterOptions);
+    //_interpreter =
+    //    await Interpreter.fromAsset('assets/yolo11l-cls_float32.tflite');
   }
 
   // Load labels from the asset file
