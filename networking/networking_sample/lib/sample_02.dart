@@ -1,6 +1,6 @@
 // Consume a single item from a web service.
 //
-// Consume the item and show it in a beautiful way.
+// Consume the item and show it in a widget.
 //
 // The web service information and the Flutter documentation is given below.
 //
@@ -185,15 +185,15 @@ Future<GitHubUser> fetchGitHubUser() async {
 }
 
 class GitHubUser {
-  final String login;
-  final String htmlUrl;
-  final int followers;
-
   const GitHubUser({
     required this.login,
     required this.htmlUrl,
     required this.followers,
   });
+
+  final String login;
+  final String htmlUrl;
+  final int followers;
 
   factory GitHubUser.fromJSON(Map<String, dynamic> json) {
     return switch (json) {
