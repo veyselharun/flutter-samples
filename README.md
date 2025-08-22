@@ -1,3 +1,3 @@
-# Flutter Demos
+# Flutter Samples
 
-This repository includes Flutter sample applications for software workshops.
+This repository contains sample Flutter applications and supporting materials for software development workshops.
