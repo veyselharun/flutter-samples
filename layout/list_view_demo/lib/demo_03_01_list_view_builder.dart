@@ -59,14 +59,17 @@ class MyListViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       itemCount: myListItems.length,
+      prototypeItem: ListTile(
+        leading: const Icon(Icons.cloud_circle),
+        title: Text(myListItems.first),
+      ),
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
             leading: const Icon(Icons.cloud),
             title: Text(myListItems[index]));
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
