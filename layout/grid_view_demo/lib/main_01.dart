@@ -1,5 +1,4 @@
 // Basic GridView with 100 numbers.
-
 import 'package:flutter/material.dart';
 
 void main() {
