@@ -42,7 +42,6 @@ dependencies:
   # them is a healthy security practice. To see the dependencies of the whole 
   # application you can use one of the following commands.
   # flutter pub deps
-  # flutter pub deps --style=flat
   # flutter pub deps --style=compact
   # flutter pub deps --style=list
   # You can also just read pubspec.lock directly. It lists every resolved package 
